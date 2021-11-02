@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'fooderlich_theme.dart';
 import 'models/models.dart';
-import 'screens/splash_screen.dart';
-// TODO: Import app_router
+//Import app_router
+import 'navigation/app_router.dart';
 
 void main() {
   runApp(
@@ -25,9 +25,19 @@ class _FooderlichState extends State<Fooderlich> {
   // Create AppStateManager
   final _appStateManager = AppStateManager();
 
-  // TODO: Define AppRouter
+  // Define AppRouter
+  late AppRouter _appRouter;
 
-  // TODO: Initialize app router
+  // Initialize app router
+  @override
+  void initState() {
+    _appRouter = AppRouter(
+      appStateManager: _appStateManager,
+      groceryManager: _groceryManager,
+      profileManager: _profileManager,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +67,12 @@ class _FooderlichState extends State<Fooderlich> {
             debugShowCheckedModeBanner: false,
             theme: theme,
             title: 'Fooderlich',
-            // TODO: Replace with Router widget
-            home: const SplashScreen(),
+            // Replace with Router widget
+            home: Router(
+              routerDelegate: _appRouter,
+              // Add backButtonDispatcher
+              backButtonDispatcher: RootBackButtonDispatcher(),
+            ),
           );
         },
       ),
